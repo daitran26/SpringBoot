@@ -27,6 +27,10 @@ public class CartServiceImpl implements CartService{
 	ProductInOrderRepo productInOrderRepo;
 	@Autowired
 	OrderMainRepo orderMainRepo;
+	@Autowired
+	OrderServiceImpl orderServiceImpl;
+	@Autowired
+	ProductService productService;
 	@Override
 	public Cart getCart(User user) {
 		// TODO Auto-generated method stub
@@ -71,7 +75,7 @@ public class CartServiceImpl implements CartService{
 	}
 
 	@Override
-	public void checkout(User user) {
+	public Set<ProductInOrder> checkout(User user) {
 		// TODO Auto-generated method stub
 		OrderMain order = new OrderMain(user);
         orderMainRepo.save(order);
@@ -80,8 +84,38 @@ public class CartServiceImpl implements CartService{
         user.getCart().getProducts().forEach(productInOrder -> {
             productInOrder.setCart(null);
             productInOrder.setOrderMain(order);
+			try {
+				productService.decreaseStock(productInOrder.getId(), productInOrder.getCount());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println("Loi âvbsas");
+			}
             productInOrderRepo.save(productInOrder);
         });
+        System.out.println(order.getId());
+        return user.getCart().getProducts();
+	}
+	@Override
+	public void checkoutpaypal(User user) {
+		// TODO Auto-generated method stub
+		OrderMain order = new OrderMain(user);
+        orderMainRepo.save(order);
+
+        // clear cart's foreign key & set order's foreign key& decrease stock
+        user.getCart().getProducts().forEach(productInOrder -> {
+            productInOrder.setCart(null);
+            productInOrder.setOrderMain(order);
+            try {
+				productService.decreaseStock(productInOrder.getId(), productInOrder.getCount());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            productInOrderRepo.save(productInOrder);
+        });
+        System.out.println(order.getId());
+        orderServiceImpl.paypal(order.getId());
 	}
 
 }

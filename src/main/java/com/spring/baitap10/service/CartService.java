@@ -1,6 +1,7 @@
 package com.spring.baitap10.service;
 
 import java.util.Collection;
+import java.util.Set;
 
 import com.spring.baitap10.model.Cart;
 import com.spring.baitap10.model.ProductInOrder;
@@ -14,5 +15,6 @@ public interface CartService {
 
     void delete(Long itemId, User user);
 
-    void checkout(User user);
+    Set<ProductInOrder> checkout(User user);
+    void checkoutpaypal(User user);
 }

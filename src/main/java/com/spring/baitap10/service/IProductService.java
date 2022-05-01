@@ -28,4 +28,9 @@ public interface IProductService {
 	//page
 	Page<Product> findAllByCategory_id(Long id,Pageable pageable);
 	Page<Product> findByPriceBetween(double min, double max, Pageable pageable);
+	
+	void increaseStock(long productId, int amount) throws Exception;
+
+    //decrease stock
+    void decreaseStock(long productId, int amount) throws Exception;
 }

@@ -59,6 +59,8 @@ public class OrderMain implements Serializable{
     @NotNull
     @ColumnDefault("0")
     private Integer orderStatus;
+    @ColumnDefault("0")
+    private Integer paypal;
 
     @CreationTimestamp
     private Date createTime;
@@ -75,6 +77,7 @@ public class OrderMain implements Serializable{
         		  .reduce(BigDecimal::add)
         		  .orElse(new BigDecimal(0));
         this.orderStatus = 0;
+        this.paypal = 0;
 
     }
 }

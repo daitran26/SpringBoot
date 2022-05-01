@@ -98,13 +98,13 @@ public class UserService implements IUserService{
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
-        helper.setFrom("rigobertoprouty9866@gmail.com","CỬA HÀNG ĐIỆN THOẠI MSMOBILE");
+        helper.setFrom("rigobertoprouty9866@gmail.com","CỬA HÀNG ĐIỆN THOẠI MdShop");
         helper.setTo(email);
         helper.setSubject(subject);
         User user = userRepo.findByEmail(email).get();
         mailContent = "<p sytle='color:red;'>Xin chào " + user.getName() + " ,<p>" + "<p> Nhấn vào link sau để xác thực email của bạn:</p>" +
                 "<h3><a href='" + confirmUrl + "'>Click vào đây để xác nhận lại mật khẩu!</a></h3>" +
-                "<p>CỬA HÀNG ĐIỆN THOẠI MSMOBILE</p>";
+                "<p>CỬA HÀNG ĐIỆN THOẠI MdShop</p>";
         helper.setText(mailContent, true);
         javaMailSender.send(message);
     }
@@ -137,9 +137,10 @@ public class UserService implements IUserService{
 		User user = userRepo.findById(id).get();
 		System.out.println(user);
 		if(user != null) {
-			user.setCart(null);
+//			user.setCart(null);
+			
 			user.setRoles(null);
-			System.out.println(user);
+			System.out.println(user.getCart().getUser().getId());
 			userRepo.deleteById(id);
 		}
 	}

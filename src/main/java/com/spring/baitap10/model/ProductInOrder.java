@@ -57,7 +57,7 @@ public class ProductInOrder {
     	this.description = product.getDescription();
     	this.image = product.getImage();
     	this.category_id = product.getCategory().getId();
-    	this.price = BigDecimal.valueOf(product.getPrice());
+    	this.price = BigDecimal.valueOf(product.getPrice()-product.getPrice()*product.getDiscount()/100);
     	this.title = product.getTitle();
     	this.count = quantity;
     }

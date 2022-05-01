@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.baitap10.exception.ResourceNotFoundException;
 import com.spring.baitap10.model.Product;
@@ -47,6 +48,8 @@ public class ProductService implements IProductService{
 		p.setName(product.getName());
 		p.setImage(product.getImage());
 		p.setPrice(product.getPrice());
+		p.setSoluong(product.getSoluong());
+		p.setDiscount(product.getDiscount());
 		p.setTitle(product.getTitle());
 		p.setDescription(product.getDescription());
 		p.setCategory(product.getCategory());
@@ -120,5 +123,33 @@ public class ProductService implements IProductService{
 	public Page<Product> findByPriceBetween(double min, double max, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return productRepository.findByPriceBetween(min, max, pageable);
+	}
+
+	@Override
+	@Transactional
+	public void increaseStock(long productId, int amount) throws Exception{
+		// TODO Auto-generated method stub
+		Product productInfo = getProductById(productId);
+        if (productInfo == null) throw new Exception("product not found"+productId);
+
+        int update = productInfo.getSoluong() + amount;
+
+        productInfo.setSoluong(update);
+        productRepository.save(productInfo);
+		
+	}
+
+	@Override
+	@Transactional
+	public void decreaseStock(long productId, int amount) throws Exception{
+		// TODO Auto-generated method stub
+		Product productInfo = getProductById(productId);
+        if (productInfo == null) throw new Exception("product not found"+productId);
+
+        int update = productInfo.getSoluong() - amount;
+        if(update < 0) throw new Exception();
+
+        productInfo.setSoluong(update);
+        productRepository.save(productInfo);
 	}
 }

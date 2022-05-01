@@ -11,13 +11,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.spring.baitap10.model.OrderMain;
+import com.spring.baitap10.model.Product;
+import com.spring.baitap10.model.ProductInOrder;
 import com.spring.baitap10.repository.OrderMainRepo;
+import com.spring.baitap10.repository.ProductRepository;
 import com.spring.baitap10.service.OrderService;
 
 @Service
 public class OrderServiceImpl implements OrderService{
 	@Autowired
 	OrderMainRepo orderMainRepo;
+	@Autowired
+	ProductService productService;
 	@Override
 	public Page<OrderMain> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
@@ -60,7 +65,19 @@ public class OrderServiceImpl implements OrderService{
 		orderMainRepo.save(orderMain);
 		return orderMainRepo.getById(orderId);
 	}
-
+	@Override
+	@Transactional
+	public OrderMain paypal(Long orderId) {
+		// TODO Auto-generated method stub
+		OrderMain orderMain = findOne(orderId);
+		if(!orderMain.getOrderStatus().equals(0)) {
+			return null;
+		}
+		orderMain.setOrderStatus(1);
+		orderMain.setPaypal(1);
+		orderMainRepo.save(orderMain);
+		return orderMainRepo.getById(orderId);
+	}
 	@Override
 	@Transactional
 	public OrderMain cancel(Long orderId) {
@@ -71,6 +88,19 @@ public class OrderServiceImpl implements OrderService{
 		}
 		orderMain.setOrderStatus(2);
 		orderMainRepo.save(orderMain);
+		Iterable<ProductInOrder> products = orderMain.getProducts();
+        for(ProductInOrder productInOrder : products) {
+            Product productInfo = productService.getProductById(productInOrder.getId());
+            if(productInfo != null) {
+                try {
+					productService.increaseStock(productInOrder.getId(), productInOrder.getCount());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        }
+//        return orderRepository.findByOrderId(orderId);
 		return orderMainRepo.getById(orderId);
 	}
 

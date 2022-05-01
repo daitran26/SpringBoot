@@ -247,7 +247,7 @@ public class AuthController {
 
         if (userService.existsByEmail(signInForm.getUsername())) {
         	userService.addVerificationCode(signInForm.getUsername());
-            return ResponseEntity.ok(new ResponeMessage("Sent email"));
+            return ResponseEntity.ok(userService.findByUsername(signInForm.getUsername()).get());
         }
         return ResponseEntity
                 .badRequest()
@@ -263,6 +263,10 @@ public class AuthController {
 									  @RequestParam(value = "size", defaultValue = "4") Integer size) {
 		PageRequest request = PageRequest.of(page - 1, size);
         return ResponseEntity.ok(userService.getAll(request));
+    }
+	@GetMapping("/usercode/{code}")
+	public ResponseEntity<?> okok(@PathVariable("code") String id) {
+        return ResponseEntity.ok(userService.findByVerificationCode(id).get());
     }
 	@GetMapping("/user/{id}")
 	public ResponseEntity<?> getUser(@PathVariable("id") String id) {

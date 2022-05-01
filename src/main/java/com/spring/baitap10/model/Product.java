@@ -11,6 +11,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
+
 @Entity
 @Table(name = "product")
 public class Product implements Serializable {
@@ -25,6 +27,10 @@ public class Product implements Serializable {
 	private String name;
 	private String image;
 	private double price;
+	@ColumnDefault("100")
+	private int soluong;
+	@ColumnDefault("0")
+	private int discount;
 	private String title;
 	@Lob
 	private String description;
@@ -37,13 +43,15 @@ public class Product implements Serializable {
 	public Product() {
 		super();
 	}
-	public Product(long id, String name, String image, double price, String title, String description,
+	public Product(long id, String name, String image, double price,int soluong,int discount, String title, String description,
 			Category category, User user) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.image = image;
 		this.price = price;
+		this.soluong = soluong;
+		this.discount = discount;
 		this.title = title;
 		this.description = description;
 		this.category = category;
@@ -98,4 +106,17 @@ public class Product implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	public int getSoluong() {
+		return soluong;
+	}
+	public void setSoluong(int soluong) {
+		this.soluong = soluong;
+	}
+	public int getDiscount() {
+		return discount;
+	}
+	public void setDiscount(int discount) {
+		this.discount = discount;
+	}
+	
 }

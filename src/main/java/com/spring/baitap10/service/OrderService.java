@@ -22,6 +22,7 @@ public interface OrderService {
 
     Optional<OrderMain> findById(Long id);
     OrderMain finish(Long orderId);
+    OrderMain paypal(Long orderId);
 
     OrderMain cancel(Long orderId);
     

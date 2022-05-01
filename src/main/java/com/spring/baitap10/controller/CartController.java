@@ -86,8 +86,13 @@ public class CartController {
     public ResponseEntity<?> checkout(Principal principal) {
     	Optional<User> user = userService.findByUsername(principal.getName());// Email as username
     	if(user!=null) {
-    		cartService.checkout(user.get());
-    		return new ResponseEntity<>(new ResponeMessage("success"),HttpStatus.OK);
+//    		return new ResponseEntity<>(cartService.checkout(user.get(),HttpStatus.OK);
+    		try {
+    			cartService.checkout(user.get());
+			} catch (Exception e) {
+				// TODO: handle exception
+				return new ResponseEntity<>(new ResponeMessage("khongdu"),HttpStatus.OK);
+			} 
     	}
     	return new ResponseEntity<>(new ResponeMessage("false"),HttpStatus.OK);
     }
@@ -99,5 +104,15 @@ public class CartController {
     @DeleteMapping("/delete/{itemId}")
     public void add1pro(@PathVariable("itemId") Long itemId) {
     	productInOrderService.deleteById(itemId);
+    }
+    @PostMapping("/checkout1")
+    public ResponseEntity<?> checkoutpay(Principal principal) {
+    	Optional<User> user = userService.findByUsername(principal.getName());// Email as username
+    	if(user!=null) {
+//    		return new ResponseEntity<>(cartService.checkoutpaypal(user.get(),HttpStatus.OK);
+    		cartService.checkoutpaypal(user.get());
+    		 return new ResponseEntity<>(new ResponeMessage("success"),HttpStatus.OK);
+    	}
+    	return new ResponseEntity<>(new ResponeMessage("false"),HttpStatus.OK);
     }
 }
