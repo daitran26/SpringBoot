@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -84,6 +86,10 @@ public class ProductController {
             							 @RequestParam(value = "size", defaultValue = "4") Integer size){
 		PageRequest request = PageRequest.of(page - 1, size);
         return new ResponseEntity<>(productService.findAll(request),HttpStatus.OK);
+	}
+	@GetMapping(value = "/page1")
+	public ResponseEntity<?> pageProduct1(@PageableDefault(sort = "soluong",direction = Sort.Direction.DESC) Pageable pageable){
+		return new ResponseEntity<>(productService.findAll(pageable),HttpStatus.OK);
 	}
 	@GetMapping(value = "/paging")
 	public ResponseEntity<?> page(@RequestParam(value = "index") int index){
