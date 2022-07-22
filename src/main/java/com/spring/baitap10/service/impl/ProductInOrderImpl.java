@@ -17,7 +17,6 @@ public class ProductInOrderImpl implements ProductInOrderService{
 	ProductInOrderRepo productInOrderRepo;
 	@Override
 	public void update(Long itemId, Integer quantity, User user) {
-		// TODO Auto-generated method stub
 		Optional<ProductInOrder> op = user.getCart().getProducts().stream().filter(item -> itemId.equals(item.getId())).findFirst();
 		op.ifPresent(product -> {
 			product.setCount(quantity);
@@ -27,27 +26,24 @@ public class ProductInOrderImpl implements ProductInOrderService{
 
 	@Override
 	public ProductInOrder findOne(Long itemId, User user) {
-		// TODO Auto-generated method stub
 		Optional<ProductInOrder> op = user.getCart().getProducts().stream().filter(item -> itemId.equals(item.getId())).findFirst();
-		return op.get();
+		if (op.isPresent()) return op.get();
+		return null;
 	}
 
 	@Override
 	public ProductInOrder save(ProductInOrder productInOrder) {
-		// TODO Auto-generated method stub
 		return productInOrderRepo.save(productInOrder);
 	}
 
 	@Override
 	public void deleteById(Long id) {
-		// TODO Auto-generated method stub
 		productInOrderRepo.deleteById(id);
 	}
 
 	@Override
 	public void deleteProductInorder(long id) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -1,12 +1,11 @@
 package com.spring.baitap10.service;
 
-import java.util.List;
-
+import com.spring.baitap10.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import com.spring.baitap10.model.Product;
+import java.util.List;
 
 public interface IProductService {
 	Product save(Product product);
@@ -26,7 +25,7 @@ public interface IProductService {
 	
 	
 	//page
-	Page<Product> findAllByCategory_id(Long id,Pageable pageable);
+	Page<Product> findAllByCategoryId(Long id,Pageable pageable);
 	Page<Product> findByPriceBetween(double min, double max, Pageable pageable);
 	
 	void increaseStock(long productId, int amount) throws Exception;

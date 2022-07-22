@@ -1,14 +1,13 @@
 package com.spring.baitap10.service.impl;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.spring.baitap10.model.Role;
 import com.spring.baitap10.model.RoleName;
 import com.spring.baitap10.repository.RoleRepo;
 import com.spring.baitap10.service.IRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class RoleService implements IRoleService{
@@ -18,7 +17,6 @@ public class RoleService implements IRoleService{
 
 	@Override
 	public Optional<Role> findByName(RoleName name) {
-		// TODO Auto-generated method stub
 		return roleRepo.findByName(name);
 	}
 }

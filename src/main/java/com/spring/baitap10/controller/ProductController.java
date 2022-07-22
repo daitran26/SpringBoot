@@ -48,7 +48,7 @@ public class ProductController {
 			productService.save(product);
 			return new ResponseEntity<>(new ResponeMessage("yes"),HttpStatus.CREATED);
 		}
-		if(user.getUsername().equals("Anonymous")) {
+		if(user != null && user.getUsername().equals("Anonymous")) {
 			return new ResponseEntity<>(new ResponeMessage("no"),HttpStatus.OK);
 		}
 		return new ResponseEntity<>(new ResponeMessage("falied"),HttpStatus.OK);
@@ -63,17 +63,17 @@ public class ProductController {
 	}
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Product> findProductById(@PathVariable("id") long id){
-		return new ResponseEntity<Product>(productService.getProductById(id), HttpStatus.OK);
+		return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
 	}
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Product> updateProduct(@RequestBody Product product ,@PathVariable("id") long id){
-		return new ResponseEntity<Product>(productService.updateProduct(product,id), HttpStatus.CREATED); 
+		return new ResponseEntity<>(productService.updateProduct(product,id), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<String> deleteProduct(@PathVariable("id") long id){
 		productService.deleteProduct(id);
-		return new ResponseEntity<String>("Delete product successfully", HttpStatus.OK); 
+		return new ResponseEntity<>("Delete product successfully", HttpStatus.OK);
 	}
 	@GetMapping(value = "/find")
 	public List<Product> findAllByCategotyId(@RequestParam(value = "cate", required = true) Long id) {
@@ -124,14 +124,6 @@ public class ProductController {
 		PageRequest request = PageRequest.of(page - 1, size,sort);
 		return new ResponseEntity<>(productService.findByPriceBetween(min, max, request),HttpStatus.OK);
 	}
-//	@GetMapping(value = "/category/{id}")
-//	public ResponseEntity<?> findAllByCategory_id(@PathVariable("id") long categoryId,
-//									          	  @RequestParam(value = "page", defaultValue = "1") Integer page,
-//									          	  @RequestParam(value = "size", defaultValue = "4") Integer size) {
-//		PageRequest request = PageRequest.of(page - 1, size);
-//		return new ResponseEntity<>(productService.findAllByCategory_id(categoryId, request),HttpStatus.OK);
-//	}
-	
 	@GetMapping(value = "/page-sort")
 	public ResponseEntity<?> pageProductSort(@RequestParam(value = "page", defaultValue = "1") Integer page,
             							 	@RequestParam(value = "size", defaultValue = "4") Integer size,
@@ -142,13 +134,13 @@ public class ProductController {
         return new ResponseEntity<>(productService.findAll(request),HttpStatus.OK);
 	}
 	@GetMapping(value = "/category/{id}")
-	public ResponseEntity<?> findAllByCategory_id(@PathVariable("id") long categoryId,
+	public ResponseEntity<?> findAllByCategoryID(@PathVariable("id") long categoryId,
 									          	  @RequestParam(value = "page", defaultValue = "1") Integer page,
 									          	  @RequestParam(value = "size", defaultValue = "4") Integer size,
 									          	  @RequestParam(value = "name", defaultValue = "id") String name,
 	            							 	  @RequestParam(value = "type",defaultValue = "ASC") String type) {
 		Sort sort = Sort.by(Direction.fromString(type),name);
 		PageRequest request = PageRequest.of(page - 1, size,sort);
-		return new ResponseEntity<>(productService.findAllByCategory_id(categoryId, request),HttpStatus.OK);
+		return new ResponseEntity<>(productService.findAllByCategoryId(categoryId, request),HttpStatus.OK);
 	}
 }
