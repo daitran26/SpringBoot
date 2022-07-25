@@ -2,24 +2,21 @@ package com.spring.baitap10.controller;
 
 import com.spring.baitap10.model.Category;
 import com.spring.baitap10.service.ICategoryService;
+import com.spring.baitap10.service.impl.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/category")
 public class CategoryController {
 
-	private ICategoryService categoryService;
-	
-	
-	public CategoryController(ICategoryService categoryService) {
-		super();
-		this.categoryService = categoryService;
-	}
+	@Autowired
+	private CategoryService categoryService;
 
 	@PostMapping(value = "/add")
 	public ResponseEntity<Category> saveCategory(@RequestBody Category category){

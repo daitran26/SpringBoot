@@ -15,15 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Optional;
 
-
 @CrossOrigin
 @RestController
 @RequestMapping("/order")
 public class OrderController {
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/order")
     public Page<OrderMain> orderList(@RequestParam(value = "page", defaultValue = "1") Integer page,

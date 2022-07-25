@@ -24,7 +24,7 @@ import com.spring.baitap10.service.TintucService;
 public class TintucController {
 
 	@Autowired
-	TintucService tintucService;
+	private TintucService tintucService;
 	@GetMapping
 	public ResponseEntity<?> listTintuc(){
 		return new ResponseEntity<>(tintucService.findAll(),HttpStatus.OK);

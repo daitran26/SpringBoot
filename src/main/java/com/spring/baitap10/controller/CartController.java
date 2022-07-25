@@ -25,13 +25,13 @@ import java.util.Optional;
 @RequestMapping("/cart")
 public class CartController {
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    CartService cartService;
+    private CartService cartService;
     @Autowired
-    ProductService productService;
+    private ProductService productService;
     @Autowired
-    ProductInOrderService productInOrderService;
+    private ProductInOrderService productInOrderService;
 
     @PostMapping("")
     public ResponseEntity<?> mergeCart(@RequestBody Collection<ProductInOrder> productInOrders, Principal principal) {
@@ -78,9 +78,7 @@ public class CartController {
     @DeleteMapping("/{itemId}")
     public void deleteItem(@PathVariable("itemId") Long itemId, Principal principal) {
         Optional<User> user = userService.findByUsername(principal.getName());
-        if (user.isPresent()){
-            cartService.delete(itemId, user.get());
-        }
+        user.ifPresent(value -> cartService.delete(itemId, value));
     }
 
 
