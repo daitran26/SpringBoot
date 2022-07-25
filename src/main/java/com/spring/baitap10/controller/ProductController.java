@@ -63,7 +63,7 @@ public class ProductController {
 	}
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Product> findProductById(@PathVariable("id") long id){
-		return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
+		return ResponseEntity.ok(productService.getProductById(id));
 	}
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Product> updateProduct(@RequestBody Product product ,@PathVariable("id") long id){

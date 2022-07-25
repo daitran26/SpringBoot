@@ -1,5 +1,7 @@
 package com.spring.baitap10.service.impl;
 
+import com.spring.baitap10.common.Response;
+import com.spring.baitap10.exception.CommonException;
 import com.spring.baitap10.exception.ResourceNotFoundException;
 import com.spring.baitap10.model.Product;
 import com.spring.baitap10.model.User;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService implements IProductService{
@@ -37,12 +40,16 @@ public class ProductService implements IProductService{
 
 	@Override
 	public Product getProductById(Long id) {
-		return productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Product", "ID", id));
+		Optional<Product> product = productRepository.findById(id);
+		if (!product.isPresent()){
+			throw new CommonException(Response.OBJECT_NOT_FOUND);
+		}
+		return product.get();
 	}
 
 	@Override
 	public Product updateProduct(Product product, long id) {
-		Product p = productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Product", "ID", id));
+		Product p = productRepository.findById(id).orElseThrow(()-> new CommonException(Response.OBJECT_NOT_FOUND));
 		p.setName(product.getName());
 		p.setImage(product.getImage());
 		p.setPrice(product.getPrice());
@@ -58,8 +65,14 @@ public class ProductService implements IProductService{
 
 	@Override
 	public void deleteProduct(long id) {
-		Product p = productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Product", "ID", id));
-		productRepository.delete(p);
+		Optional<Product> product = productRepository.findById(id);
+		if (product.isPresent()){
+			productRepository.delete(product.get());
+		}
+		else {
+			throw new CommonException(Response.OBJECT_NOT_FOUND);
+		}
+
 	}
 
 	@Override
@@ -127,7 +140,7 @@ public class ProductService implements IProductService{
         if (productInfo == null) throw new ResourceNotFoundException("Product","ID",productId);
 
         int update = productInfo.getSoluong() - amount;
-        if(update < 0) throw new Exception();
+        if(update < 0) throw new CommonException(Response.SYSTEM_ERROR);
 
         productInfo.setSoluong(update);
         productRepository.save(productInfo);

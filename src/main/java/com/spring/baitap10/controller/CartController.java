@@ -112,8 +112,8 @@ public class CartController {
         Optional<User> user = userService.findByUsername(principal.getName());// Email as username
         if (user.isPresent()) {
             cartService.checkoutpaypal(user.get());
-            return new ResponseEntity<>(new ResponeMessage("success"), HttpStatus.OK);
+            return ResponseEntity.ok(new ResponeMessage("CHECKOUT_SUCCESS"));
         }
-        return new ResponseEntity<>(new ResponeMessage("false"), HttpStatus.OK);
+        return ResponseEntity.ok(new ResponeMessage("CHECKOUT_FAILED"));
     }
 }
