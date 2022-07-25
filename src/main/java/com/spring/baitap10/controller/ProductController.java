@@ -2,6 +2,9 @@ package com.spring.baitap10.controller;
 
 import java.util.List;
 
+import com.spring.baitap10.common.PageResponse;
+import com.spring.baitap10.common.Response;
+import com.spring.baitap10.common.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -62,8 +65,8 @@ public class ProductController {
 		return productService.findHotProduct();
 	}
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Product> findProductById(@PathVariable("id") long id){
-		return ResponseEntity.ok(productService.getProductById(id));
+	public ResponseEntity<ResponseBody> findProductById(@PathVariable("id") long id){
+		return ResponseEntity.ok(new ResponseBody(Response.SUCCESS,productService.getProductById(id)));
 	}
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Product> updateProduct(@RequestBody Product product ,@PathVariable("id") long id){
@@ -82,10 +85,11 @@ public class ProductController {
 	
 	//paging
 	@GetMapping(value = "/page")
-	public ResponseEntity<?> pageProduct(@RequestParam(value = "page", defaultValue = "1") Integer page,
+	public ResponseEntity<ResponseBody> pageProduct(@RequestParam(value = "page", defaultValue = "1") Integer page,
             							 @RequestParam(value = "size", defaultValue = "4") Integer size){
 		PageRequest request = PageRequest.of(page - 1, size);
-        return new ResponseEntity<>(productService.findAll(request),HttpStatus.OK);
+		PageResponse<Product> pageResponse = new PageResponse<>(productService.findAll(request));
+        return new ResponseEntity<>(new ResponseBody(Response.SUCCESS,pageResponse),HttpStatus.OK);
 	}
 	@GetMapping(value = "/page1")
 	public ResponseEntity<?> pageProduct1(@PageableDefault(sort = "soluong",direction = Sort.Direction.DESC) Pageable pageable){
