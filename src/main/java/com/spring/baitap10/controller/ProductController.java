@@ -48,8 +48,8 @@ public class ProductController {
     }
 
     @GetMapping(value = "/all")
-    public List<Product> getAllProducts() {
-        return productService.getAll();
+    public ResponseEntity<ResponseBody> getAllProducts() {
+        return ResponseEntity.ok(new ResponseBody(Response.SUCCESS,productService.getAll()));
     }
 
     @GetMapping(value = "/top4")

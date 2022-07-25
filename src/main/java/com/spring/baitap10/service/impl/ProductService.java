@@ -38,8 +38,8 @@ public class ProductService implements IProductService{
 	}
 	
 	@Override
-	public List<Product> getAll() {
-		return productRepository.findAll();
+	public List<ProductDto> getAll() {
+		return productMapper.toDto(productRepository.findAll());
 	}
 
 	@Override
