@@ -1,25 +1,11 @@
 package com.spring.baitap10.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "category")
 public class Category implements Serializable{
 	@Id
@@ -28,5 +14,28 @@ public class Category implements Serializable{
 	@Column(name = "name")
 	private String name;
 	@OneToMany(mappedBy = "category")
-	private List<Product> products;
+	private List<Product> products = new ArrayList<>();
+
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Category(long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+	public Category() {
+		super();
+	}
+
 }

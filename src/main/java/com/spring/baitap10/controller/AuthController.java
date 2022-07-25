@@ -9,6 +9,8 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.spring.baitap10.common.Response;
+import com.spring.baitap10.exception.CommonException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -141,7 +143,7 @@ public class AuthController {
         User user;
         try {
             if (changePassword.getNewPassword() == null) {
-                return new ResponseEntity<>(new ResponeMessage("no"), HttpStatus.OK);
+                throw new CommonException(Response.MISSING_PARAM);
             } else {
                 user = userDetailService.getCurrentUser();
                 if (passwordEncoder.matches(changePassword.getOldPassword(), user.getPassword())) {

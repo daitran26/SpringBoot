@@ -44,7 +44,6 @@ public class UserDetailService implements UserDetailsService {
             user = Optional.of(new User());
             user.get().setUsername("Anonymous");
         }
-        if (user.isPresent()) return user.get();
-        return null;
+        return user.orElse(null);
     }
 }
