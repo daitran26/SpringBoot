@@ -29,7 +29,7 @@ public class UserPrinciple implements UserDetails{
 	private String email;
 	private String avatar;
 	private String phone;
-	private String adress;
+	private String address;
 	private Collection<? extends GrantedAuthority> roles;
 	public static UserPrinciple build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());

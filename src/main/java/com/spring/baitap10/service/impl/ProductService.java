@@ -1,5 +1,7 @@
 package com.spring.baitap10.service.impl;
 
+import com.spring.baitap10.DTO.ProductDto;
+import com.spring.baitap10.DTO.mapper.ProductMapper;
 import com.spring.baitap10.common.Response;
 import com.spring.baitap10.exception.CommonException;
 import com.spring.baitap10.exception.ResourceNotFoundException;
@@ -24,12 +26,15 @@ public class ProductService implements IProductService{
 	private ProductRepository productRepository;
 	@Autowired
 	private UserDetailService userDetailService;
+
+	@Autowired
+	private ProductMapper productMapper;
 	
 	@Override
-	public Product save(Product product) {
+	public ProductDto save(ProductDto product) {
 		User user = userDetailService.getCurrentUser();
 		product.setUser(user);
-		return productRepository.save(product);
+		return productMapper.toDto(productRepository.save(productMapper.toEntity(product)));
 	}
 	
 	@Override
@@ -47,19 +52,10 @@ public class ProductService implements IProductService{
 	}
 
 	@Override
-	public Product updateProduct(Product product, long id) {
+	public ProductDto updateProduct(ProductDto productDto, long id) {
 		Product p = productRepository.findById(id).orElseThrow(()-> new CommonException(Response.OBJECT_NOT_FOUND));
-		p.setName(product.getName());
-		p.setImage(product.getImage());
-		p.setPrice(product.getPrice());
-		p.setSoluong(product.getSoluong());
-		p.setDiscount(product.getDiscount());
-		p.setTitle(product.getTitle());
-		p.setDescription(product.getDescription());
-		p.setCategory(product.getCategory());
-		productRepository.save(p);
-		return p;
-		
+		productDto.setId(p.getId());
+		return productMapper.toDto(productRepository.save(productMapper.toEntity(productDto)));
 	}
 
 	@Override
