@@ -31,12 +31,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
-public class OrderMain implements Serializable{
-
-	private static final long serialVersionUID = -6046626780140953010L;
+public class OrderMain{
 
 	@Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

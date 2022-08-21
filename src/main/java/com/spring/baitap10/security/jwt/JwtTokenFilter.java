@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-//Tìm token/user thông qua resquest
 public class JwtTokenFilter extends OncePerRequestFilter{
 	private static final Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
 	@Autowired
@@ -27,7 +26,6 @@ public class JwtTokenFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		try {
 			String token = getToken(request);
 			if(token != null && jwtProvider.validateToken(token)) {
@@ -38,19 +36,15 @@ public class JwtTokenFilter extends OncePerRequestFilter{
 				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 			logger.error("Can't set user authentication. Message : {}",e);
 		}
 		filterChain.doFilter(request, response);
 	}
 	public String getToken(HttpServletRequest request) {
 		String header = request.getHeader("Authorization");
-		if(header != null && header.startsWith("Bearer ")) {
+		if(header.startsWith("Bearer ")) {
 			return header.replace("Bearer ", "");
 		}
-		if(header != null) {
-			return header;
-		}
-		return null;
+		return header;
 	}
 }

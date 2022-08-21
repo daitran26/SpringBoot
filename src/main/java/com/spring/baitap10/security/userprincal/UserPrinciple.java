@@ -29,7 +29,7 @@ public class UserPrinciple implements UserDetails{
 	private String email;
 	private String avatar;
 	private String phone;
-	private String adress;
+	private String address;
 	private Collection<? extends GrantedAuthority> roles;
 	public static UserPrinciple build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
@@ -40,50 +40,41 @@ public class UserPrinciple implements UserDetails{
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
 		return roles;
 	}
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return password;
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return username;
 	}
 	public String getAvatar() {
-		// TODO Auto-generated method stub
 		return avatar;
 	}
 	public String getName() {
-		// TODO Auto-generated method stub
 		return name;
 	}
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
