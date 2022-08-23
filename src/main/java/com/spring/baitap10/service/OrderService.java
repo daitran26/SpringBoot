@@ -25,7 +25,6 @@ public interface OrderService {
     OrderMain paypal(Long orderId);
 
     OrderMain cancel(Long orderId);
-    
-    long totalMonth(int month);
+
     List<OrderMain> findAll();
 }

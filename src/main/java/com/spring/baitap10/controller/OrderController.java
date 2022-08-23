@@ -75,8 +75,7 @@ public class OrderController {
 
     @GetMapping("/month")
     public ResponseEntity<?> totalMonth(@RequestBody HashMap<String, Integer> month) {
-
-        return ResponseEntity.ok(orderService.totalMonth(month.get("month")));
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping("/all")

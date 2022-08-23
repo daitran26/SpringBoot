@@ -1,23 +1,24 @@
 package com.spring.baitap10.service.impl;
 
+import java.util.List;
+
 import com.spring.baitap10.DTO.ProductDto;
 import com.spring.baitap10.DTO.mapper.ProductMapper;
 import com.spring.baitap10.common.Response;
 import com.spring.baitap10.exception.CommonException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.spring.baitap10.exception.ResourceNotFoundException;
 import com.spring.baitap10.model.Product;
 import com.spring.baitap10.model.User;
 import com.spring.baitap10.repository.ProductRepository;
 import com.spring.baitap10.security.userprincal.UserDetailService;
 import com.spring.baitap10.service.IProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService implements IProductService{
@@ -31,43 +32,40 @@ public class ProductService implements IProductService{
 	private ProductMapper productMapper;
 	
 	@Override
-	public ProductDto save(ProductDto product) {
+	public Product save(Product product) {
 		User user = userDetailService.getCurrentUser();
 		product.setUser(user);
-		return productMapper.toDto(productRepository.save(productMapper.toEntity(product)));
+		return productRepository.save(product);
 	}
 	
 	@Override
-	public List<ProductDto> getAll() {
-		return productMapper.toDto(productRepository.findAll());
+	public List<Product> getAll() {
+		return productRepository.findAll();
 	}
 
 	@Override
 	public Product getProductById(Long id) {
-		Optional<Product> product = productRepository.findById(id);
-		if (!product.isPresent()){
-			throw new CommonException(Response.OBJECT_NOT_FOUND);
-		}
-		return product.get();
+		return productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Product", "ID", id));
 	}
 
 	@Override
-	public ProductDto updateProduct(ProductDto productDto, long id) {
-		Product p = productRepository.findById(id).orElseThrow(()-> new CommonException(Response.OBJECT_NOT_FOUND));
-		productDto.setId(p.getId());
-		return productMapper.toDto(productRepository.save(productMapper.toEntity(productDto)));
+	public ProductDto updateProduct(ProductDto productDto) {
+		Product product = productRepository.findById(productDto.getId())
+				.map(p -> this.productMapper.toEntity(productDto)).map(this.productRepository::save)
+				.orElseThrow(()-> new CommonException(Response.OBJECT_NOT_FOUND));
+
+		return productMapper.toDto(product);
 	}
 
 	@Override
 	public void deleteProduct(long id) {
-		Optional<Product> product = productRepository.findById(id);
-		if (product.isPresent()){
-			productRepository.delete(product.get());
-		}
-		else {
-			throw new CommonException(Response.OBJECT_NOT_FOUND);
-		}
+		Product p = productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Product", "ID", id));
+		productRepository.delete(p);
+	}
 
+	@Override
+	public List<Product> findAllByCategotyId(Long id) {
+		return productRepository.findAllByCategotyId(id);
 	}
 
 	@Override
@@ -81,12 +79,27 @@ public class ProductService implements IProductService{
 	}
 
 	@Override
+	public List<Product> findAllProduct(int index) {
+		return productRepository.findAllProduct(index);
+	}
+
+	@Override
+	public List<Product> findAllByCategotyId(Long id, int index) {
+		return productRepository.findAllByCategotyId(id, index);
+	}
+
+	@Override
 	public Page<Product> findByNameContaining(String name,Pageable pageable) {
 		return productRepository.findByNameContaining(name,pageable);
 	}
 
 	@Override
-	public Page<Product> findAllByCategoryId(Long id, Pageable pageable) {
+	public List<Product> findAll(Sort sort) {
+		return productRepository.findAll(sort);
+	}
+
+	@Override
+	public Page<Product> findAllByCategory_id(Long id, Pageable pageable) {
 		return productRepository.findAllByCategory_id(id,pageable);
 	}
 
@@ -99,7 +112,7 @@ public class ProductService implements IProductService{
 	@Transactional
 	public void increaseStock(long productId, int amount) throws Exception{
 		Product productInfo = getProductById(productId);
-        if (productInfo == null) throw new ResourceNotFoundException("Product","ID",productId);
+        if (productInfo == null) throw new Exception("product not found"+productId);
 
         int update = productInfo.getSoluong() + amount;
 
@@ -112,10 +125,10 @@ public class ProductService implements IProductService{
 	@Transactional
 	public void decreaseStock(long productId, int amount) throws Exception{
 		Product productInfo = getProductById(productId);
-        if (productInfo == null) throw new ResourceNotFoundException("Product","ID",productId);
+        if (productInfo == null) throw new Exception("product not found"+productId);
 
         int update = productInfo.getSoluong() - amount;
-        if(update < 0) throw new CommonException(Response.SYSTEM_ERROR);
+        if(update < 0) throw new Exception();
 
         productInfo.setSoluong(update);
         productRepository.save(productInfo);

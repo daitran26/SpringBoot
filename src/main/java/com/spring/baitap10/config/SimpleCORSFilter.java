@@ -39,10 +39,12 @@ public class SimpleCORSFilter implements Filter {
 		
 		@Override
 		public void init(FilterConfig filterConfig) {
+			log.info("Init filterConfig");
 		}
 		
 		@Override
 		public void destroy() {
+			log.info("Destroy filterConfig");
 		}
 
 }

@@ -59,7 +59,7 @@ public class User {
 	@JoinTable(name = "user_role",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
 	Set<Role> roles = new HashSet<>();
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore  // fix bi-direction toString() recursion problem
+    @JsonIgnore
     private Cart cart;
 	public User(@NotBlank @Size(min = 3, max = 50) String name, @NotBlank @Size(min = 3, max = 50) String username,
 			@NotBlank String password, @Email @NotBlank String email, String avatar) {

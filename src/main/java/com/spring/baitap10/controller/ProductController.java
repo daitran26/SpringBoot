@@ -1,7 +1,6 @@
 package com.spring.baitap10.controller;
 
 import com.spring.baitap10.DTO.ProductDto;
-import com.spring.baitap10.DTO.Respone.ResponeMessage;
 import com.spring.baitap10.DTO.mapper.ProductMapper;
 import com.spring.baitap10.common.PageResponse;
 import com.spring.baitap10.common.Response;
@@ -9,7 +8,6 @@ import com.spring.baitap10.common.ResponseBody;
 import com.spring.baitap10.model.Product;
 import com.spring.baitap10.model.User;
 import com.spring.baitap10.security.userprincal.UserDetailService;
-import com.spring.baitap10.service.IProductService;
 import com.spring.baitap10.service.impl.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -42,7 +40,7 @@ public class ProductController {
             if (product.getImage() == null || product.getImage().trim().isEmpty()) {
                 return new ResponseEntity<>(new ResponseBody(Response.MISSING_PARAM), HttpStatus.OK);
             }
-            return ResponseEntity.ok(new ResponseBody(Response.SUCCESS, productService.save(product)));
+            return ResponseEntity.ok(new ResponseBody(Response.SUCCESS, productService.save(productMapper.toEntity(product))));
         }
         return new ResponseEntity<>(new ResponseBody(Response.ERROR_AUTH_SYSTEM), HttpStatus.OK);
     }
@@ -63,8 +61,8 @@ public class ProductController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ResponseBody> updateProduct(@RequestBody ProductDto productDto, @PathVariable("id") long id) {
-        return ResponseEntity.ok(new ResponseBody(Response.SUCCESS,productService.updateProduct(productDto,id)));
+    public ResponseEntity<ResponseBody> updateProduct(@RequestBody ProductDto productDto) {
+        return ResponseEntity.ok(new ResponseBody(Response.SUCCESS,productService.updateProduct(productDto)));
     }
 
     @DeleteMapping(value = "/{id}")
@@ -114,7 +112,7 @@ public class ProductController {
         Sort sort = Sort.by(Direction.fromString(type), name);
         PageRequest request = PageRequest.of(page - 1, size, sort);
         PageResponse<ProductDto> pageResponse = new PageResponse<>(
-                productService.findAllByCategoryId(categoryId,request).map(product -> productMapper.toDto(product)));
+                productService.findAllByCategory_id(categoryId,request).map(product -> productMapper.toDto(product)));
         return ResponseEntity.ok(new ResponseBody(Response.SUCCESS,pageResponse));
     }
 }
