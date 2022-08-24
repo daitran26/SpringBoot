@@ -101,10 +101,6 @@ public class OrderServiceImpl implements OrderService{
 		return orderMainRepo.findById(id);
 	}
 
-	@Override
-	public long totalMonth(int month) {
-		return orderMainRepo.totalMonth(month)!=0 ? orderMainRepo.totalMonth(month) : 0;
-	}
 
 	@Override
 	public List<OrderMain> findAll() {

@@ -2,31 +2,27 @@ version: "3.7"
 
 services:
 
-  db:
-    image: mysql
-    container_name: mysql-db2
-    environment:
-      - MYSQL_ROOT_PASSWORD=12345678
-      - MYSQL_USER=root
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-      - MYSQL_RANDOM_ROOT_PASSWORD=12345678
-    ports:
-      - "3306:3306"
-    restart: always
-
   java-docker:
     image: openjdk:8-jre-alpine
-    container_name: java-docker
-    build:
-          context: .                          #docker file path (. means root directory)
-          dockerfile: Dockerfile
     ports:
       - 8080:8080
+    depends_on:
+      - db
     restart: always
 
-    depends_on:                           #define dependencies of this app
-      - db
+  db:
+    image: mariadb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/banhang?createDatabaseIfNotExist=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 12345678
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: banhang
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 12345678
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./db.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3306:3306
+    restart: always
+
+volumes:
+  mysql-data:
