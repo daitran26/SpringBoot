@@ -1,15 +1,15 @@
 package com.spring.baitap10.controller;
 
-import com.spring.baitap10.DTO.Request.ItemForm;
-import com.spring.baitap10.DTO.Respone.ResponeMessage;
+import com.spring.baitap10.dto.request.ItemForm;
+import com.spring.baitap10.dto.respone.ResponeMessage;
 import com.spring.baitap10.model.Cart;
 import com.spring.baitap10.model.Product;
 import com.spring.baitap10.model.ProductInOrder;
 import com.spring.baitap10.model.User;
 import com.spring.baitap10.service.CartService;
 import com.spring.baitap10.service.ProductInOrderService;
-import com.spring.baitap10.service.impl.ProductService;
-import com.spring.baitap10.service.impl.UserService;
+import com.spring.baitap10.service.impl.ProductServiceImpl;
+import com.spring.baitap10.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +25,11 @@ import java.util.Optional;
 @RequestMapping("/cart")
 public class CartController {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
     @Autowired
     private CartService cartService;
     @Autowired
-    private ProductService productService;
+    private ProductServiceImpl productService;
     @Autowired
     private ProductInOrderService productInOrderService;
 

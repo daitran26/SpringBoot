@@ -19,7 +19,7 @@ public class OrderServiceImpl implements OrderService{
 	@Autowired
 	OrderMainRepo orderMainRepo;
 	@Autowired
-	ProductService productService;
+    ProductServiceImpl productService;
 	@Override
 	public Page<OrderMain> findAll(Pageable pageable) {
 		return orderMainRepo.findAllByOrderByOrderStatusAscCreateTimeDesc(pageable);

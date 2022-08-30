@@ -2,7 +2,7 @@ package com.spring.baitap10.controller;
 
 import com.spring.baitap10.model.OrderMain;
 import com.spring.baitap10.service.OrderService;
-import com.spring.baitap10.service.impl.UserService;
+import com.spring.baitap10.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +22,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @GetMapping("/order")
     public Page<OrderMain> orderList(@RequestParam(value = "page", defaultValue = "1") Integer page,

@@ -1,11 +1,10 @@
 package com.spring.baitap10.service.impl;
 
-import com.spring.baitap10.DTO.Request.SendEmail;
+import com.spring.baitap10.dto.request.SendEmail;
 import com.spring.baitap10.model.Cart;
 import com.spring.baitap10.model.User;
 import com.spring.baitap10.repository.CartRepo;
 import com.spring.baitap10.repository.UserRepo;
-import com.spring.baitap10.service.IUserService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,7 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 @Service
-public class UserService implements IUserService {
+public class UserServiceImpl implements com.spring.baitap10.service.UserService {
 
     @Autowired
     UserRepo userRepo;

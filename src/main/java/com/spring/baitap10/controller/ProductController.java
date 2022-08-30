@@ -1,14 +1,15 @@
 package com.spring.baitap10.controller;
 
-import com.spring.baitap10.DTO.ProductDto;
-import com.spring.baitap10.DTO.mapper.ProductMapper;
 import com.spring.baitap10.common.PageResponse;
 import com.spring.baitap10.common.Response;
 import com.spring.baitap10.common.ResponseBody;
+import com.spring.baitap10.dto.ProductDto;
+import com.spring.baitap10.dto.mapper.ProductMapper;
 import com.spring.baitap10.model.Product;
 import com.spring.baitap10.model.User;
 import com.spring.baitap10.security.userprincal.UserDetailService;
-import com.spring.baitap10.service.impl.ProductService;
+import com.spring.baitap10.service.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,12 +24,12 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/api/product")
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private UserDetailService userDetailService;
+    private final ProductService productService;
+
+    private final UserDetailService userDetailService;
 
     @Autowired
     private ProductMapper productMapper;
@@ -112,7 +113,7 @@ public class ProductController {
         Sort sort = Sort.by(Direction.fromString(type), name);
         PageRequest request = PageRequest.of(page - 1, size, sort);
         PageResponse<ProductDto> pageResponse = new PageResponse<>(
-                productService.findAllByCategory_id(categoryId,request).map(product -> productMapper.toDto(product)));
+                productService.findAllByCategory_id(categoryId,request).map(this.productMapper::toDto));
         return ResponseEntity.ok(new ResponseBody(Response.SUCCESS,pageResponse));
     }
 }

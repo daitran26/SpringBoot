@@ -2,7 +2,7 @@ package com.spring.baitap10.security.userprincal;
 
 import com.spring.baitap10.model.User;
 import com.spring.baitap10.repository.UserRepo;
-import com.spring.baitap10.service.impl.UserService;
+import com.spring.baitap10.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +19,7 @@ public class UserDetailService implements UserDetailsService {
     @Autowired
     UserRepo userRepo;
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
 
     @Override
     @Transactional

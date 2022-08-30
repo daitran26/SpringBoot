@@ -1,4 +1,4 @@
-package com.spring.baitap10.DTO;
+package com.spring.baitap10.dto;
 
 import com.spring.baitap10.model.Category;
 import com.spring.baitap10.model.User;

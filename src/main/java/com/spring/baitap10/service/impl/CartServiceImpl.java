@@ -29,7 +29,7 @@ public class CartServiceImpl implements CartService{
 	@Autowired
 	OrderServiceImpl orderServiceImpl;
 	@Autowired
-	ProductService productService;
+    ProductServiceImpl productService;
 	@Override
 	public Cart getCart(User user) {
 		return user.getCart();

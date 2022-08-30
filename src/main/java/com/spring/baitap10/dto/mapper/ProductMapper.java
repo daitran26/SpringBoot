@@ -1,13 +1,11 @@
-package com.spring.baitap10.DTO.mapper;
+package com.spring.baitap10.dto.mapper;
 
-import com.spring.baitap10.DTO.ProductDto;
+import com.spring.baitap10.dto.ProductDto;
 import com.spring.baitap10.model.Product;
 import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
     Product toEntity(ProductDto productDto);

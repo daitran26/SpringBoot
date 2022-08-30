@@ -2,8 +2,8 @@ package com.spring.baitap10.service.impl;
 
 import java.util.List;
 
-import com.spring.baitap10.DTO.ProductDto;
-import com.spring.baitap10.DTO.mapper.ProductMapper;
+import com.spring.baitap10.dto.ProductDto;
+import com.spring.baitap10.dto.mapper.ProductMapper;
 import com.spring.baitap10.common.Response;
 import com.spring.baitap10.exception.CommonException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,9 @@ import com.spring.baitap10.model.Product;
 import com.spring.baitap10.model.User;
 import com.spring.baitap10.repository.ProductRepository;
 import com.spring.baitap10.security.userprincal.UserDetailService;
-import com.spring.baitap10.service.IProductService;
 
 @Service
-public class ProductService implements IProductService{
+public class ProductServiceImpl implements com.spring.baitap10.service.ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;

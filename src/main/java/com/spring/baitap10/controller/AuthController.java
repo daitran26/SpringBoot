@@ -34,15 +34,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.baitap10.DTO.Request.ChangeAvatar;
-import com.spring.baitap10.DTO.Request.ChangeInfoForm;
-import com.spring.baitap10.DTO.Request.ChangePassword;
-import com.spring.baitap10.DTO.Request.ResetPassword;
-import com.spring.baitap10.DTO.Request.SendEmail;
-import com.spring.baitap10.DTO.Request.SignInForm;
-import com.spring.baitap10.DTO.Request.SignUpForm;
-import com.spring.baitap10.DTO.Respone.JwtRespone;
-import com.spring.baitap10.DTO.Respone.ResponeMessage;
+import com.spring.baitap10.dto.request.ChangeAvatar;
+import com.spring.baitap10.dto.request.ChangeInfoForm;
+import com.spring.baitap10.dto.request.ChangePassword;
+import com.spring.baitap10.dto.request.ResetPassword;
+import com.spring.baitap10.dto.request.SendEmail;
+import com.spring.baitap10.dto.request.SignInForm;
+import com.spring.baitap10.dto.request.SignUpForm;
+import com.spring.baitap10.dto.respone.JwtRespone;
+import com.spring.baitap10.dto.respone.ResponeMessage;
 import com.spring.baitap10.model.Role;
 import com.spring.baitap10.model.RoleName;
 import com.spring.baitap10.model.User;
@@ -50,17 +50,17 @@ import com.spring.baitap10.repository.UserRepo;
 import com.spring.baitap10.security.jwt.JwtProvider;
 import com.spring.baitap10.security.userprincal.UserDetailService;
 import com.spring.baitap10.security.userprincal.UserPrinciple;
-import com.spring.baitap10.service.impl.RoleService;
-import com.spring.baitap10.service.impl.UserService;
+import com.spring.baitap10.service.impl.RoleServiceImpl;
+import com.spring.baitap10.service.impl.UserServiceImpl;
 
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
     @Autowired
-    RoleService roleService;
+    RoleServiceImpl roleService;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired

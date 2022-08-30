@@ -3,7 +3,6 @@ package com.spring.baitap10.service.impl;
 import com.spring.baitap10.exception.ResourceNotFoundException;
 import com.spring.baitap10.model.Category;
 import com.spring.baitap10.repository.CategotyRepository;
-import com.spring.baitap10.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CategoryService implements ICategoryService{
+public class CategoryServiceImpl implements com.spring.baitap10.service.CategoryService {
 
 	@Autowired
 	private CategotyRepository categotyRepository;

@@ -1,8 +1,7 @@
 package com.spring.baitap10.controller;
 
 import com.spring.baitap10.model.Category;
-import com.spring.baitap10.service.ICategoryService;
-import com.spring.baitap10.service.impl.CategoryService;
+import com.spring.baitap10.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
