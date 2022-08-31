@@ -18,9 +18,9 @@ services:
     ports:
       - 3306:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=root
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_PASSWORD=
+      - MYSQL_PASSWORD=root
       - MYSQL_DATABASE=mdshop_system
     volumes:
       - mysql_data:/var/lib/mysql

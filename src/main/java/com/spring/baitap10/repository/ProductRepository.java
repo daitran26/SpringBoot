@@ -5,11 +5,12 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.spring.baitap10.model.Product;
-
+import org.springframework.data.repository.query.Param;
 
 
 public interface ProductRepository extends JpaRepository<Product, Long>{
@@ -30,4 +31,10 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     
     //page
     Page<Product> findAllByCategory_id(Long id,Pageable pageable);
+
+    @Query(value = "SELECT p FROM Product p " +
+            "WHERE (:name IS NULL OR p.name LIKE %:name%) " )//+
+//            "ORDER BY :i DESC ")
+//    @EntityGraph(attributePaths = "questionEntities")
+    Page<Product> search(@Param("name") String name, Pageable pageable);
 }

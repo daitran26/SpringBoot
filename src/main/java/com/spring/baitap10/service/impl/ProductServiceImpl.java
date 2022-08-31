@@ -5,7 +5,9 @@ import java.util.List;
 import com.spring.baitap10.dto.ProductDto;
 import com.spring.baitap10.dto.mapper.ProductMapper;
 import com.spring.baitap10.common.Response;
+import com.spring.baitap10.dto.request.SearchProductRequestDto;
 import com.spring.baitap10.exception.CommonException;
+import com.spring.baitap10.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +22,7 @@ import com.spring.baitap10.repository.ProductRepository;
 import com.spring.baitap10.security.userprincal.UserDetailService;
 
 @Service
-public class ProductServiceImpl implements com.spring.baitap10.service.ProductService {
+public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -31,35 +33,23 @@ public class ProductServiceImpl implements com.spring.baitap10.service.ProductSe
 	private ProductMapper productMapper;
 	
 	@Override
-	public Product save(Product product) {
+	public ProductDto saveOrUpdate(ProductDto productDto) {
 		User user = userDetailService.getCurrentUser();
-		product.setUser(user);
-		return productRepository.save(product);
-	}
-	
-	@Override
-	public List<Product> getAll() {
-		return productRepository.findAll();
+		productDto.setUser(user);
+		if (productDto.getId() != 0 && findOne(productDto.getId())!=null){
+			return this.productMapper.toDto(productRepository.save(this.productMapper.toEntity(productDto)));
+		}
+		return this.productMapper.toDto(productRepository.save(this.productMapper.toEntity(productDto)));
 	}
 
 	@Override
-	public Product getProductById(Long id) {
-		return productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Product", "ID", id));
+	public ProductDto findOne(Long id) {
+		return productRepository.findById(id).map(this.productMapper::toDto).orElseThrow(()-> new CommonException(Response.OBJECT_NOT_FOUND));
 	}
 
 	@Override
-	public ProductDto updateProduct(ProductDto productDto) {
-		Product product = productRepository.findById(productDto.getId())
-				.map(p -> this.productMapper.toEntity(productDto)).map(this.productRepository::save)
-				.orElseThrow(()-> new CommonException(Response.OBJECT_NOT_FOUND));
-
-		return productMapper.toDto(product);
-	}
-
-	@Override
-	public void deleteProduct(long id) {
-		Product p = productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Product", "ID", id));
-		productRepository.delete(p);
+	public void delete(long id) {
+		productRepository.delete(this.productMapper.toEntity(findOne(id)));
 	}
 
 	@Override
@@ -108,13 +98,10 @@ public class ProductServiceImpl implements com.spring.baitap10.service.ProductSe
 	}
 
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void increaseStock(long productId, int amount) throws Exception{
-		Product productInfo = getProductById(productId);
-        if (productInfo == null) throw new Exception("product not found"+productId);
-
+		Product productInfo = null;
         int update = productInfo.getSoluong() + amount;
-
         productInfo.setSoluong(update);
         productRepository.save(productInfo);
 		
@@ -123,7 +110,7 @@ public class ProductServiceImpl implements com.spring.baitap10.service.ProductSe
 	@Override
 	@Transactional
 	public void decreaseStock(long productId, int amount) throws Exception{
-		Product productInfo = getProductById(productId);
+		Product productInfo = null;
         if (productInfo == null) throw new Exception("product not found"+productId);
 
         int update = productInfo.getSoluong() - amount;
@@ -131,5 +118,16 @@ public class ProductServiceImpl implements com.spring.baitap10.service.ProductSe
 
         productInfo.setSoluong(update);
         productRepository.save(productInfo);
+	}
+
+	@Override
+	public Page<ProductDto> pageProduct(SearchProductRequestDto searchProductRequestDto) {
+		try {
+			return productRepository.search(searchProductRequestDto.getName(), searchProductRequestDto.getPageable())
+					.map(this.productMapper::toDto);
+		}
+		catch (Exception e){
+			throw e;
+		}
 	}
 }

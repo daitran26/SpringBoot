@@ -4,7 +4,6 @@ import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "product")

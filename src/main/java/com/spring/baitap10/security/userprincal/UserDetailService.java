@@ -1,5 +1,7 @@
 package com.spring.baitap10.security.userprincal;
 
+import com.spring.baitap10.common.Response;
+import com.spring.baitap10.exception.CommonException;
 import com.spring.baitap10.model.User;
 import com.spring.baitap10.repository.UserRepo;
 import com.spring.baitap10.service.impl.UserServiceImpl;
@@ -41,8 +43,7 @@ public class UserDetailService implements UserDetailsService {
         if (userRepo.existsByUsername(userName)) {
             user = userService.findByUsername(userName);
         } else {
-            user = Optional.of(new User());
-            user.get().setUsername("Anonymous");
+            throw new CommonException(Response.SYSTEM_ERROR);
         }
         return user.orElse(null);
     }

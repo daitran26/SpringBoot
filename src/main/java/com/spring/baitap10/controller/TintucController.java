@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.spring.baitap10.model.TinTuc;
 import com.spring.baitap10.service.TintucService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin
@@ -36,7 +37,7 @@ public class TintucController {
 		return new ResponseEntity<>(tintucService.getDetail(id),HttpStatus.OK);
 	}
 	@PostMapping("/add")
-	public ResponseEntity<TinTuc> add(@RequestBody TinTuc tinTuc){
+	public ResponseEntity<TinTuc> add(@RequestBody @Valid TinTuc tinTuc){
 		return new ResponseEntity<>(tintucService.save(tinTuc),HttpStatus.CREATED);
 	}
 	@DeleteMapping("/{id}")

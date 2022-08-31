@@ -56,7 +56,7 @@ public class CartController {
 
     @PostMapping("/add")
     public boolean addToCart(@RequestBody ItemForm form, Principal principal) {
-        Product productInfo = productService.getProductById(form.getProductId());
+        Product productInfo = null;
         try {
             mergeCart(Collections.singleton(new ProductInOrder(productInfo, form.getQuantity())), principal);
         } catch (Exception e) {

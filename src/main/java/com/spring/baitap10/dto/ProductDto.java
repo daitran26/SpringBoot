@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @AllArgsConstructor
 @Builder
@@ -14,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class ProductDto {
     private long id;
     private String name;
+    @NotNull(message = "Image is not null")
     private String image;
     private double price;
     private int soluong;
