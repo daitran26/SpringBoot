@@ -43,7 +43,7 @@ public class UserDetailService implements UserDetailsService {
         if (userRepo.existsByUsername(userName)) {
             user = userService.findByUsername(userName);
         } else {
-            throw new CommonException(Response.SYSTEM_ERROR);
+            throw new CommonException(Response.ERROR_AUTH_SYSTEM);
         }
         return user.orElse(null);
     }

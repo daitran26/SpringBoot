@@ -36,9 +36,6 @@ public class ProductServiceImpl implements ProductService {
 	public ProductDto saveOrUpdate(ProductDto productDto) {
 		User user = userDetailService.getCurrentUser();
 		productDto.setUser(user);
-		if (productDto.getId() != 0 && findOne(productDto.getId())!=null){
-			return this.productMapper.toDto(productRepository.save(this.productMapper.toEntity(productDto)));
-		}
 		return this.productMapper.toDto(productRepository.save(this.productMapper.toEntity(productDto)));
 	}
 
@@ -123,7 +120,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Page<ProductDto> pageProduct(SearchProductRequestDto searchProductRequestDto) {
 		try {
-			return productRepository.search(searchProductRequestDto.getName(), searchProductRequestDto.getPageable())
+			return productRepository.search(searchProductRequestDto.getName(),searchProductRequestDto.getCategoryId(), searchProductRequestDto.getPageable())
 					.map(this.productMapper::toDto);
 		}
 		catch (Exception e){

@@ -12,4 +12,7 @@ import lombok.NoArgsConstructor;
 public class SearchProductRequestDto extends PageDto {
     @Schema(description = "Tên sản phẩm", example = "Samsung")
     private String name;
+
+    @Schema(description = "Mã danh mục", example = "1")
+    private Long categoryId;
 }

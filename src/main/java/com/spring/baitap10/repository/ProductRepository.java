@@ -33,8 +33,10 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     Page<Product> findAllByCategory_id(Long id,Pageable pageable);
 
     @Query(value = "SELECT p FROM Product p " +
-            "WHERE (:name IS NULL OR p.name LIKE %:name%) " )//+
+            "WHERE (:name IS NULL OR p.name LIKE %:name%) " +
+            "AND (:category_id IS NULL OR p.category.id = :category_id)"
+    )//+
 //            "ORDER BY :i DESC ")
 //    @EntityGraph(attributePaths = "questionEntities")
-    Page<Product> search(@Param("name") String name, Pageable pageable);
+    Page<Product> search(@Param("name") String name,@Param("category_id") Long category_id, Pageable pageable);
 }

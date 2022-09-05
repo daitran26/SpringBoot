@@ -20,16 +20,23 @@ public class PageDto {
 //    @NotBlank(message = "Số trang tìm kiếm không được bỏ trống")
     @Schema(description = "Số trang tìm kiếm", defaultValue = "0", example = "0")
 //    @Pattern(regexp = "[0-9]*", message = "Số trang tìm kiếm không đúng định dạng")
-    private int pageNumber = 0;
+    private Integer pageNumber = 0;
 
 //    @NotBlank(message = "Số bản ghi/1 trang không được bỏ trống")
     @Schema(description = "Số bản ghi/1 trang", defaultValue = "5", example = "5")
 //    @Pattern(regexp = "^[0-9]*", message = "Số bản ghi/1 trang không đúng định dạng")
-    private int pageSize = 5;
+    private Integer pageSize = 5;
+
+    @Schema(description = "Sắp xếp theo", defaultValue = "id", example = "id")
+    private String sortBy = "id";
+
+    @Schema(description = "Sắp xếp loại", defaultValue = "ASC", example = "ASC")
+    private Sort.Direction sortType = Sort.DEFAULT_DIRECTION;
 
     @Hidden
     public Pageable getPageable() {
-        return PageRequest.of(getPageNumber(), getPageSize());
+        Sort sort = Sort.by(getSortType(),getSortBy());
+        return PageRequest.of(getPageNumber(), getPageSize(),sort);
     }
 
     @Hidden
